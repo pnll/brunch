@@ -1,4 +1,4 @@
 *.bak
 *.log
 __pycache__/
-old/
+_old/

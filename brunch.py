@@ -18,7 +18,7 @@ r = Repo()
 
 def job_function():
     now = datetime.now()
-    nowDatetime = now.strftime('%Y-%m-%d_%H%M%S')
+    nowDatetime = now.strftime('%Y-%m-%d_%H')
     print(nowDatetime)
     #print ( '%s-%s-%s' % ( now.year, now.month, now.day ) )
     #date = '%s-%s-%s_%s:%s' % ( now.year, now.month, now.day, now.hour, now.min )
@@ -98,8 +98,9 @@ def job_function():
     w2.close()
     driver.quit()
 
-    time.sleep(3)
+    time.sleep(5)
 
+    # Update on github
     r.git.add('.')
     r.git.commit(m=date_name)
     r.git.push()
