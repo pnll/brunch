@@ -70,7 +70,7 @@ def job_function():
             <meta charset="UTF-8">
         </head>
         <title>RECOMMENDED ARTICLES</title>
-        <body><p>'''+date+'</p>\n')
+        <body><p>'''+str(now)+'</p>\n')
 
     driver.implicitly_wait(3)
     for i in range(0, len(result)):
