@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 import codecs
 import time
 import re
@@ -37,7 +36,6 @@ streamHandler.setFormatter(formatter)
 # Handler를 logging에 추가
 logger.addHandler(fileHandler)
 logger.addHandler(streamHandler)
-
 
 
 def job_function():
@@ -81,7 +79,7 @@ def job_function():
         keyword = result[i].find('span',{'class':'keyword_item_txt'}).text
         link = result[i]['href']
 
-        print (date + ' > ' + keyword + ' : ' + link)
+        #print (date + ' > ' + keyword + ' : ' + link)
         w.write(date+',\t' + keyword + ',\t' + link + ',\t\n')
         logger.info(keyword + ' : ' + link)
         #driver.find_element_by_class_name('keyword_item_txt')[i].click() #post_title has_image
@@ -109,10 +107,11 @@ def job_function():
 
         title = result[i].find('strong',{'class':'tit_subject'}).text
         body = result[i].find('p',{'class':'desc_subject'}).text
+        author = result[i].find('span',{'class':'info_by'}).text
 
-        print (img + '<br><h3>' + title + '</h3><br>' + body + '<p>\n')
-        w2.write('<p>'+img + '<br><h3>' + title + '</h3><br>' + body + '</p>\n')
-        logger.debug(title + ' : ' + body)
+        #print (img + '<br><h3>' + title + '</h3><br>' + body + '<p>\n')
+        w2.write('<p>'+img + '<br><h3>' + title + '</h3><h6>' + author + '</h6><br>' + body + '</p>\n')
+        logger.debug(title + ' by ' + author + ' : ' + body.replace(u'\u200b', ' '))
 
     w2.write('\n</body><html>')
 
