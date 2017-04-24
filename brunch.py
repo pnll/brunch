@@ -8,13 +8,37 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+import logging
+import logging.handlers
+
 #Cron type scheduler
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 url = 'https://brunch.co.kr/'
-path = '.\\record\\'
+path = './record/'
 #os.chdir(path)
 r = Repo()
+
+# logger 인스턴스를 생성 및 로그 레벨 설정
+logger = logging.getLogger("crumbs")
+logger.setLevel(logging.DEBUG)
+
+# formmater 생성
+formatter = logging.Formatter('[%(levelname)s|%(filename)s:%(lineno)s] %(asctime)s > %(message)s')
+
+# fileHandler와 StreamHandler를 생성
+fileHandler = logging.FileHandler('./log/scheduler.log')
+streamHandler = logging.StreamHandler()
+
+# handler에 fommater 세팅
+fileHandler.setFormatter(formatter)
+streamHandler.setFormatter(formatter)
+
+# Handler를 logging에 추가
+logger.addHandler(fileHandler)
+logger.addHandler(streamHandler)
+
+
 
 def job_function():
     now = datetime.now()
@@ -34,7 +58,7 @@ def job_function():
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36"
     )
-    driver = webdriver.PhantomJS(desired_capabilities=dcap,executable_path=r'..\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe')
+    driver = webdriver.PhantomJS(desired_capabilities=dcap,executable_path=r'../phantomjs-2.1.1-windows/bin/phantomjs.exe')
     driver.implicitly_wait(5)
     driver.get(url)
     #driver.find_element_by_id('mArticle')
@@ -59,8 +83,8 @@ def job_function():
 
         print (date + ' > ' + keyword + ' : ' + link)
         w.write(date+',\t' + keyword + ',\t' + link + ',\t\n')
+        logger.info(keyword + ' : ' + link)
         #driver.find_element_by_class_name('keyword_item_txt')[i].click() #post_title has_image
-
 
     result = soup.find("div", {"class":"recommend_articles"}).findAll("a", {"class":"link_slide"})
     print (str(len(result))) #30
@@ -88,6 +112,7 @@ def job_function():
 
         print (img + '<br><h3>' + title + '</h3><br>' + body + '<p>\n')
         w2.write('<p>'+img + '<br><h3>' + title + '</h3><br>' + body + '</p>\n')
+        logger.debug(title + ' : ' + body)
 
     w2.write('\n</body><html>')
 
