@@ -75,7 +75,6 @@ def job_function():
     #time.sleep(1)
 
     for i in range(0, len(result)):
-        #td_img=talk('span',{'class':'u_cbox_contents'})[i].find("span")
         keyword = result[i].find('span',{'class':'keyword_item_txt'}).text
         link = result[i]['href']
 
@@ -110,8 +109,8 @@ def job_function():
         author = result[i].find('span',{'class':'info_by'}).text
 
         #print (img + '<br><h3>' + title + '</h3><br>' + body + '<p>\n')
-        w2.write('<p>'+img + '<br><h3>' + title + '</h3><h6>' + author + '</h6><br>' + body + '</p>\n')
-        logger.debug(title + ' by ' + author + ' : ' + body.replace(u'\u200b', ' '))
+        w2.write('<p>'+img + '<br><h3>' + title + '</h3><h6>' + author + '</h6>' + body + '</p>\n')
+        logger.debug(title + ' ' + author.replace(u'\xa0', ' ') + ' : ' + body.replace(u'\u200b', ' '))
 
     w2.write('\n</body><html>')
 
